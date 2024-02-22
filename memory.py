@@ -15,21 +15,22 @@ class MemoryCard:
 
     def get_click(self):
         global IMAGE
-        if IMAGE is None:
-            IMAGE = self
-        elif IMAGE != self:
-            self.open = True
-            IMAGE.open = True
-            if self.id == IMAGE.id:
-                self.open_time = float('inf')
-                IMAGE.open_time = float('inf')
-            else:
-                self.open_time = pygame.time.get_ticks()
-                IMAGE.open_time = pygame.time.get_ticks()
-            IMAGE = None
+        if not self.open:
+            if IMAGE is None:
+                IMAGE = self
+            elif IMAGE != self:
+                self.open = True
+                IMAGE.open = True
+                if self.id == IMAGE.id:
+                    self.open_time = float('inf')
+                    IMAGE.open_time = float('inf')
+                else:
+                    self.open_time = pygame.time.get_ticks()
+                    IMAGE.open_time = pygame.time.get_ticks()
+                IMAGE = None
 
     def update(self):
-        if pygame.time.get_ticks() - self.open_time >= 30:
+        if pygame.time.get_ticks() - self.open_time >= 600:
             self.open = False
 
     def draw(self, screen, x, y):
@@ -59,20 +60,24 @@ def memory(screen):
         random.shuffle(i)
     pprint(board)
 
+    clock = pygame.time.Clock()
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                x, y = x % 80, y % 100
-                board[y][x].get_click()
+                mx, my = event.pos
+                x, y = mx // 80, my // 100
+                if x < len(board[0]) and y < len(board) and mx % 80 <= 60 and my % 100 <= 80:
+                    board[x][y].get_click()
         screen.fill((70, 149, 151))
         for i in range(len(board)):
             for j in range(len(board[i])):
+                board[i][j].update()
                 board[i][j].draw(screen, 80 * i, 100 * j)
         pygame.display.flip()
+        clock.tick(60)
 
 
 pygame.init()
