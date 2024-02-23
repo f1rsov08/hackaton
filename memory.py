@@ -6,6 +6,7 @@ IMAGE = None
 LAST_OPEN = float('-inf')
 MOVES = 12
 
+
 class MemoryCard:
     def __init__(self, id_):
         self.id = id_
@@ -50,7 +51,7 @@ class MemoryCard:
         return f'MemoryCard({self.id})'
 
 
-def memory(screen):
+def memory(screen, top_text=''):
     global MOVES
     board = [[MemoryCard(0), MemoryCard(0), MemoryCard(1), MemoryCard(1)],
              [MemoryCard(2), MemoryCard(2), MemoryCard(3), MemoryCard(3)],
@@ -61,6 +62,8 @@ def memory(screen):
     board = list(map(list, zip(*board[::-1])))
     for i in board:
         random.shuffle(i)
+
+    font = pygame.font.Font(None, 50)
 
     MOVES = 12
     clock = pygame.time.Clock()
@@ -77,9 +80,8 @@ def memory(screen):
                     board[y][x].get_click()
 
         screen.fill((70, 149, 151))
-        font = pygame.font.Font(None, 50)
-        text = font.render(f'Осталось попыток: {MOVES}', True, (255, 204, 153))
-        screen.blit(text, (40, 40))
+        screen.blit(font.render(top_text, True, (255, 204, 153)), (40, 20))
+        screen.blit(font.render(f'Осталось попыток: {MOVES}', True, (255, 204, 153)), (40, 60))
         for i in range(len(board)):
             for j in range(len(board[i])):
                 board[i][j].update()
@@ -87,9 +89,9 @@ def memory(screen):
 
         if MOVES < 0:
             running = False
+            memory(screen, 'Вы проиграли, попробуйте еще раз')
         pygame.display.flip()
         clock.tick(60)
-
 
 
 pygame.init()
