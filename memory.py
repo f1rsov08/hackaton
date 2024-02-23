@@ -64,6 +64,7 @@ def memory(screen, top_text=''):
         random.shuffle(i)
 
     font = pygame.font.Font(None, 50)
+    screen.fill((70, 149, 151))
 
     MOVES = 12
     clock = pygame.time.Clock()
@@ -92,11 +93,3 @@ def memory(screen, top_text=''):
             memory(screen, 'Вы проиграли, попробуйте еще раз')
         pygame.display.flip()
         clock.tick(60)
-
-
-pygame.init()
-size = width, height = 800, 900
-screen = pygame.display.set_mode(size)
-screen.fill((0, 0, 255))
-memory(screen)
-pygame.quit()
