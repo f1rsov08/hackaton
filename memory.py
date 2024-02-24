@@ -1,6 +1,7 @@
 import pygame
 from load_image import load_image
 import random
+import sys
 
 IMAGE = None
 LAST_OPEN = float('-inf')
@@ -72,7 +73,7 @@ def memory(screen, top_text=''):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - LAST_OPEN >= 600:
                 mx, my = event.pos
                 mx, my = mx - 20, my - 110
