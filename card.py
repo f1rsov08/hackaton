@@ -9,7 +9,7 @@ class Card:
             data = json.load(f)
         self.name = data["name"]
         self.description = data["description"]
-        self.image = pygame.transform.scale(load_image(f'card_images/{data["image"]}'), (400, 400))
+        self.image = pygame.transform.scale(load_image(f'card_images/{data["image"]}'), (560, 360))
 
     def draw(self, screen):
         screen.blit(pygame.font.Font(None, 80).render(self.name, True, (255, 204, 153)), (20, 20))
@@ -22,7 +22,7 @@ class Card:
                 screen.blit(pygame.font.Font(None, 40).render(' '.join(s), True, (255, 204, 153)), (20, 80 + cs * 30))
                 s, c = [], 0
                 cs += 1
-        screen.blit(self.image, (20, 480))
+        screen.blit(self.image, (20, 520))
 
 
 def show_card(screen, path):
