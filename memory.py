@@ -54,15 +54,17 @@ class MemoryCard:
 
 def memory(screen, top_text=''):
     global MOVES
-    board = [[MemoryCard(0), MemoryCard(0), MemoryCard(1), MemoryCard(1)],
-             [MemoryCard(2), MemoryCard(2), MemoryCard(3), MemoryCard(3)],
-             [MemoryCard(4), MemoryCard(4), MemoryCard(5), MemoryCard(5)],
-             [MemoryCard(6), MemoryCard(6), MemoryCard(7), MemoryCard(7)]]
-    for i in board:
-        random.shuffle(i)
-    board = list(map(list, zip(*board[::-1])))
-    for i in board:
-        random.shuffle(i)
+
+    n = 4
+
+    cards = []
+    for i in range(n ** 2 // 2):
+        cards.extend([MemoryCard(i) for _ in range(2)])
+    random.shuffle(cards)
+
+    board = [[] for _ in range(n)]
+    for i, card in enumerate(cards):
+        board[i // n].append(card)
 
     font = pygame.font.Font(None, 50)
     screen.fill((70, 149, 151))
