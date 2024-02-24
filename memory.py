@@ -88,8 +88,11 @@ def memory(screen, top_text=''):
                 board[i][j].update()
                 board[i][j].draw(screen, 20 + 200 * j, 110 + 200 * i)
 
+        pygame.display.flip()
+        clock.tick(60)
+
         if MOVES < 0:
             running = False
             memory(screen, 'Вы проиграли, попробуйте еще раз')
-        pygame.display.flip()
-        clock.tick(60)
+        elif all(map(lambda x: all(map(lambda y: y.open, x)), board)):
+            running = False
