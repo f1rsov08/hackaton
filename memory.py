@@ -9,11 +9,12 @@ MOVES = 12
 
 
 class MemoryCard:
-    def __init__(self, id_):
+    def __init__(self, id_, size):
         self.id = id_
-        self.image = pygame.transform.scale(load_image(f'memory/{id_}.jpg'), (160, 160))
+        self.image = pygame.transform.scale(load_image(f'memory/{id_}.jpg'), (size, size))
         self.open = False
         self.open_time = 0
+        self.size = size
 
     def get_click(self):
         global IMAGE, LAST_OPEN, MOVES
@@ -42,8 +43,8 @@ class MemoryCard:
         if IMAGE == self or self.open:
             screen.blit(self.image, (x, y))
         else:
-            pygame.draw.rect(screen, (255, 204, 153), pygame.Rect(x + 5, y + 5, 150, 150), width=0)
-        pygame.draw.rect(screen, (229, 81, 55), pygame.Rect(x, y, 160, 160), width=5)
+            pygame.draw.rect(screen, (255, 204, 153), pygame.Rect(x, y, self.size, self.size), width=0)
+        pygame.draw.rect(screen, (229, 81, 55), pygame.Rect(x, y, self.size, self.size), width=5)
 
     def __str__(self):
         return f'MemoryCard({self.id})'
@@ -52,14 +53,14 @@ class MemoryCard:
         return f'MemoryCard({self.id})'
 
 
-def memory(screen, top_text=''):
+def memory(screen, n, top_text=''):
     global MOVES
 
-    n = 4
-
+    size2 = 800 // n
+    size = int(size2 * 0.8)
     cards = []
     for i in range(n ** 2 // 2):
-        cards.extend([MemoryCard(i) for _ in range(2)])
+        cards.extend([MemoryCard(i, size) for _ in range(2)])
     random.shuffle(cards)
 
     board = [[] for _ in range(n)]
@@ -69,7 +70,7 @@ def memory(screen, top_text=''):
     font = pygame.font.Font(None, 50)
     screen.fill((70, 149, 151))
 
-    MOVES = 12
+    MOVES = int(n ** 2 * 0.75)
     clock = pygame.time.Clock()
     running = True
     while running:
@@ -79,8 +80,8 @@ def memory(screen, top_text=''):
             if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - LAST_OPEN >= 600:
                 mx, my = event.pos
                 mx, my = mx - 20, my - 110
-                x, y = mx // 200, my // 200
-                if mx >= 0 and my >= 0 and x < len(board[0]) and y < len(board) and mx % 200 <= 160 and my % 200 <= 160:
+                x, y = mx // size2, my // size2
+                if mx >= 0 and my >= 0 and x < len(board[0]) and y < len(board) and mx % size2 <= size and my % size2 <= size:
                     board[y][x].get_click()
 
         screen.fill((70, 149, 151))
@@ -89,13 +90,13 @@ def memory(screen, top_text=''):
         for i in range(len(board)):
             for j in range(len(board[i])):
                 board[i][j].update()
-                board[i][j].draw(screen, 20 + 200 * j, 110 + 200 * i)
+                board[i][j].draw(screen, 20 + size2 * j, 110 + size2 * i)
 
         pygame.display.flip()
         clock.tick(60)
 
         if MOVES < 0:
             running = False
-            memory(screen, 'Вы проиграли, попробуйте еще раз')
+            memory(screen, n, 'Вы проиграли, попробуйте еще раз')
         elif all(map(lambda x: all(map(lambda y: y.open, x)), board)):
             running = False
