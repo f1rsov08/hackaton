@@ -38,17 +38,11 @@ LEFT = 'left'
 RIGHT = 'right'
 
 
-def terminate():
-    pygame.quit()
-    sys.exit()
-
-
 def check_exit_req():
     for event in pygame.event.get(QUIT):
-        terminate()
+        pygame.quit()
+        sys.exit()
     for event in pygame.event.get(KEYUP):
-        if event.key == K_ESCAPE:
-            terminate()
         pygame.event.post(event)
 
 
@@ -150,6 +144,7 @@ def drawBoard(board, message):
 
     DISPLAYSURF.blit(RESET_SURF, RESET_RECT)
     DISPLAYSURF.blit(NEW_SURF, NEW_RECT)
+
 
 def draw_block(block_x, block_y, number, adjx=0, adjy=0):
     left, top = getLeftTopOfTile(block_x, block_y)
@@ -268,8 +263,7 @@ def puzzle(sreen):
             msg = 'Solved!'
             drawBoard(mainBoard, msg)
             pygame.display.update()
-            pygame.time.wait(2000)
-            terminate()
+            break
         drawBoard(mainBoard, msg)
 
         check_exit_req()
@@ -306,6 +300,11 @@ def puzzle(sreen):
                     slideTo = UP
                 elif event.key in (K_DOWN, K_s) and isValidMove(mainBoard, DOWN):
                     slideTo = DOWN
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_z:
+                    rst_animation(mainBoard, solutionSeq + allMoves)
+                    allMoves = []
 
         if slideTo:
             sliding_animation(
