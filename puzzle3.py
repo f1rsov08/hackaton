@@ -241,7 +241,7 @@ def puzzle(sreen):
     global FPSCLOCK, BASICFONT, RESET_SURF, RESET_RECT, NEW_SURF, NEW_RECT, SOLVE_SURF, IMAGES, DISPLAYSURF
     DISPLAYSURF = sreen
     pygame.init()
-    original_images = [pygame.image.load(f'images/sobor/{i}.png') for i in range(1, 25)]
+    original_images = [pygame.image.load(f'images/nik/{i}.png') for i in range(1, 25)]
     IMAGES = [pygame.transform.scale(image, (block_size, block_size)) for image in original_images]
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_caption('Slide Puzzle - CopyAssignment')
