@@ -244,7 +244,7 @@ def rst_animation(board, allMoves):
 
 
 def puzzle(sreen):
-    global FPSCLOCK, BASICFONT, RESET_SURF, RESET_RECT, NEW_SURF, NEW_RECT, SOLVE_SURF, SOLVE_RECT, IMAGES, DISPLAYSURF
+    global FPSCLOCK, BASICFONT, RESET_SURF, RESET_RECT, NEW_SURF, NEW_RECT, SOLVE_SURF, IMAGES, DISPLAYSURF
     DISPLAYSURF = sreen
     pygame.init()
     original_images = [pygame.image.load(f'images/monas/{i}.png') for i in range(1, 9)]
@@ -285,9 +285,6 @@ def puzzle(sreen):
                         allMoves = []
                     elif NEW_RECT.collidepoint(event.pos):
                         mainBoard, solutionSeq = generateNewPuzzle(80)
-                        allMoves = []
-                    elif SOLVE_RECT.collidepoint(event.pos):
-                        rst_animation(mainBoard, solutionSeq + allMoves)
                         allMoves = []
                 else:
                     blankx, blanky = getBlankPosition(mainBoard)

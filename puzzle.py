@@ -150,7 +150,6 @@ def drawBoard(board, message):
 
     DISPLAYSURF.blit(RESET_SURF, RESET_RECT)
     DISPLAYSURF.blit(NEW_SURF, NEW_RECT)
-    DISPLAYSURF.blit(SOLVE_SURF, SOLVE_RECT)
 
 
 def draw_block(block_x, block_y, number, adjx=0, adjy=0):
@@ -246,7 +245,7 @@ def rst_animation(board, allMoves):
 
 
 def puzzle(sreen):
-    global FPSCLOCK, BASICFONT, RESET_SURF, RESET_RECT, NEW_SURF, NEW_RECT, SOLVE_SURF, SOLVE_RECT, IMAGES, DISPLAYSURF
+    global FPSCLOCK, BASICFONT, RESET_SURF, RESET_RECT, NEW_SURF, NEW_RECT, SOLVE_SURF, IMAGES, DISPLAYSURF
     DISPLAYSURF = sreen
     pygame.init()
     original_images = [pygame.image.load(f'images/most/{i}.png') for i in range(1, 16)]
@@ -259,7 +258,7 @@ def puzzle(sreen):
         'Reset', TEXT, BGCOLOR, win_width - 130, win_height - 530, size=25)
     NEW_SURF, NEW_RECT = makeText(
         'New Game', TEXT, BGCOLOR, win_width - 130, win_height - 500, size=25)
-    SOLVE_SURF, SOLVE_RECT = makeText(
+    SOLVE_SURF = makeText(
         'Solve', TEXT, BGCOLOR, win_width - 130, win_height - 470, size=25)
 
     mainBoard, solutionSeq = generateNewPuzzle(80)
@@ -286,9 +285,6 @@ def puzzle(sreen):
                         allMoves = []
                     elif NEW_RECT.collidepoint(event.pos):
                         mainBoard, solutionSeq = generateNewPuzzle(80)
-                        allMoves = []
-                    elif SOLVE_RECT.collidepoint(event.pos):
-                        rst_animation(mainBoard, solutionSeq + allMoves)
                         allMoves = []
                 else:
                     blankx, blanky = getBlankPosition(mainBoard)

@@ -1,6 +1,5 @@
 import pygame
 import memory
-import puzzle
 import puzzle1
 import puzzle2
 import puzzle3
